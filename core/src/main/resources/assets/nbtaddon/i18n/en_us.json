@@ -1,0 +1,13 @@
+{
+  "nbtaddon": {
+    "settings": {
+      "name": "NBTAddon",
+      "enabled": {
+        "name": "Enabled"
+      },
+      "copy": {
+        "name": "Copy"
+      }
+    }
+  }
+}

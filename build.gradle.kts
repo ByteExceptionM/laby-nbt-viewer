@@ -4,27 +4,24 @@ plugins {
     id("net.labymod.gradle.addon")
 }
 
-group = "org.example"
+group = "io.masel"
 version = "1.0.0"
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 
 labyMod {
-    defaultPackageName = "org.example" //change this to your main package name (used by all modules)
+    defaultPackageName = "io.masel.nbtaddon"
     addonInfo {
-        namespace = "example"
-        displayName = "ExampleAddon"
-        author = "Example Author"
-        description = "Example Description"
-        minecraftVersion = "*"
+        namespace = "nbtaddon"
+        displayName = "NBTAddon"
+        author = "ByteException_"
+        description = "View nbt infos of an item"
+        minecraftVersion = "1.17.1<*"
         version = System.getenv().getOrDefault("VERSION", "0.0.1")
     }
 
     minecraft {
         registerVersions(
-                "1.8.9",
-                "1.12.2",
-                "1.16.5",
                 "1.17.1",
                 "1.18.2",
                 "1.19.2",
@@ -97,4 +94,8 @@ fun configureRun(provider: net.labymod.gradle.core.minecraft.provider.VersionPro
 
         minVersion = mixinMinVersion
     }
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    options.encoding = "UTF-8"
 }
