@@ -15,7 +15,7 @@ labyMod {
         namespace = "nbtaddon"
         displayName = "NBTAddon"
         author = "ByteException_"
-        description = "View nbt infos of an item"
+        description = "LabyMod addon to view item nbt data in minecraft. Enable Advanced Tooltips (F3+H), hover over an item and press SHIFT. Magic starts..."
         minecraftVersion = "1.17.1<*"
         version = System.getenv().getOrDefault("VERSION", "0.0.1")
     }
