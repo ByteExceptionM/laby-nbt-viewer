@@ -14,7 +14,7 @@ public class NBTAddon extends LabyAddon<NBTAddonConfiguration> {
 
     @Override
     protected void load() {
-        this.nbtApi = ((DefaultReferenceStorage) this.getReferenceStorageAccessor()).inbtApi();
+        this.nbtApi = ((DefaultReferenceStorage) this.referenceStorageAccessor()).inbtApi();
     }
 
     @Override

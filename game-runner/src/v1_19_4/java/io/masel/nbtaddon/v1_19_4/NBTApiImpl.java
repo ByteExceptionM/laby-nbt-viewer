@@ -1,4 +1,4 @@
-package io.masel.nbtaddon.v1_19_4_pre3;
+package io.masel.nbtaddon.v1_19_4;
 
 import io.masel.nbtaddon.api.INBTApi;
 import net.labymod.api.models.Implements;

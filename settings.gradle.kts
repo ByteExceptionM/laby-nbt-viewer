@@ -1,7 +1,7 @@
 rootProject.name = "laby-nbt-addon"
 
 pluginManagement {
-    val labyGradlePluginVersion = "0.3.18"
+    val labyGradlePluginVersion = "0.3.25"
     plugins {
         id("net.labymod.gradle") version (labyGradlePluginVersion)
     }

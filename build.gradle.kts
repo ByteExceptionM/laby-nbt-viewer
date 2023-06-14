@@ -17,7 +17,7 @@ labyMod {
         author = "ByteException_"
         description = "LabyMod addon to view item nbt data in minecraft. Enable Advanced Tooltips (F3+H), hover over an item and press SHIFT. Magic starts..."
         minecraftVersion = "1.17.1<*"
-        version = System.getenv().getOrDefault("VERSION", "0.0.1")
+        version = System.getenv().getOrDefault("VERSION", "1.2.0")
     }
 
     minecraft {
@@ -26,7 +26,8 @@ labyMod {
                 "1.18.2",
                 "1.19.2",
                 "1.19.3",
-                "1.19.4-pre3"
+                "1.19.4",
+                "1.20.1"
         ) { version, provider ->
             configureRun(provider, version)
         }
@@ -68,14 +69,6 @@ fun configureRun(provider: net.labymod.gradle.core.minecraft.provider.VersionPro
     }
 
     provider.javaVersion = when (gameVersion) {
-        "1.8.9", "1.12.2", "1.16.5" -> {
-            JavaVersion.VERSION_1_8
-        }
-
-        "1.17.1" -> {
-            JavaVersion.VERSION_16
-        }
-
         else -> {
             JavaVersion.VERSION_17
         }
