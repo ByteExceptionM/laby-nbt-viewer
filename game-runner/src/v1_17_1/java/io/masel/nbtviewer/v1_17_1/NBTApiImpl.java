@@ -1,6 +1,6 @@
-package io.masel.nbtaddon.v1_19_3;
+package io.masel.nbtviewer.v1_17_1;
 
-import io.masel.nbtaddon.api.INBTApi;
+import io.masel.nbtviewer.api.INBTApi;
 import net.labymod.api.models.Implements;
 import net.labymod.api.nbt.tags.NBTTagCompound;
 import net.minecraft.client.Minecraft;

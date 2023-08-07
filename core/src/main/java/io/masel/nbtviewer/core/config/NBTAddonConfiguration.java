@@ -1,4 +1,4 @@
-package io.masel.nbtaddon.core.config;
+package io.masel.nbtviewer.core.config;
 
 import net.labymod.api.addon.AddonConfig;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;

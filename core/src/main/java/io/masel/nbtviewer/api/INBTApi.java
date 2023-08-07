@@ -1,4 +1,4 @@
-package io.masel.nbtaddon.api;
+package io.masel.nbtviewer.api;
 
 import net.labymod.api.nbt.tags.NBTTagCompound;
 import net.labymod.api.reference.annotation.Referenceable;

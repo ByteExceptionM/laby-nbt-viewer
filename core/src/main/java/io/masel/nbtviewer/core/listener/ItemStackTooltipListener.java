@@ -1,7 +1,7 @@
-package io.masel.nbtaddon.core.listener;
+package io.masel.nbtviewer.core.listener;
 
-import io.masel.nbtaddon.api.INBTApi;
-import io.masel.nbtaddon.core.NBTAddon;
+import io.masel.nbtviewer.api.INBTApi;
+import io.masel.nbtviewer.core.NBTAddon;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.screen.key.Key;
