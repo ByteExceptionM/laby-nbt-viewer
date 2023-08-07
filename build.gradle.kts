@@ -10,10 +10,10 @@ version = "1.1.0"
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 
 labyMod {
-    defaultPackageName = "io.masel.nbtaddon"
+    defaultPackageName = "io.masel.nbtviewer"
     addonInfo {
-        namespace = "nbtaddon"
-        displayName = "NBTAddon"
+        namespace = "nbt-viewer"
+        displayName = "NBT Viewer"
         author = "ByteException_"
         description = "LabyMod addon to view item nbt data in minecraft. Enable Advanced Tooltips (F3+H), hover over an item and press SHIFT. Magic starts..."
         minecraftVersion = "1.17.1<*"
