@@ -1,7 +1,7 @@
 {
-  "nbtaddon": {
+  "nbt-viewer": {
     "settings": {
-      "name": "NBTAddon",
+      "name": "NBT Viewer",
       "enabled": {
         "name": "Enabled"
       },
