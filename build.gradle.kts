@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "io.masel"
-version = "1.2.0"
+version = "1.4.0"
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 
