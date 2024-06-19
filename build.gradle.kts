@@ -7,8 +7,6 @@ plugins {
 group = "io.masel"
 version = "1.4.0"
 
-java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
-
 labyMod {
     defaultPackageName = "io.masel.nbtviewer"
     addonInfo {
@@ -70,11 +68,7 @@ fun configureRun(provider: net.labymod.gradle.core.minecraft.provider.VersionPro
         args("--addon-dev-environment", "true")
     }
 
-    provider.javaVersion = when (gameVersion) {
-        else -> {
-            JavaVersion.VERSION_17
-        }
-    }
+    provider.javaVersion = JavaVersion.VERSION_21
 
     provider.mixin {
         val mixinMinVersion = when (gameVersion) {
