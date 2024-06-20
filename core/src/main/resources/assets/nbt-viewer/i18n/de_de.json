@@ -3,13 +3,13 @@
     "settings": {
       "name": "NBT Viewer",
       "enabled": {
-        "name": "Enabled"
+        "name": "Aktiviert"
       },
       "copy": {
-        "name": "Copy"
+        "name": "Kopieren"
       },
       "onlyShowCustomData": {
-        "name": "Only Show Custom Data"
+        "name": "Zeige nur benutzerdefinierte Daten"
       }
     }
   }
