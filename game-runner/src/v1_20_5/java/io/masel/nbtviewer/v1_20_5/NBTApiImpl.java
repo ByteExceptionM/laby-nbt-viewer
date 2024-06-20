@@ -1,4 +1,4 @@
-package io.masel.nbtviewer.v1_20_4;
+package io.masel.nbtviewer.v1_20_5;
 
 import com.google.gson.*;
 import io.masel.nbtviewer.api.INBTApi;
