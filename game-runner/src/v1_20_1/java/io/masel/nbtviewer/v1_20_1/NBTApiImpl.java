@@ -7,8 +7,8 @@ import net.labymod.api.component.data.DataComponentKey;
 import net.labymod.api.models.Implements;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NumericTag;
 import net.minecraft.nbt.StringTag;
 import org.jetbrains.annotations.NotNull;
 
@@ -52,7 +52,7 @@ public class NBTApiImpl implements INBTApi {
     private JsonElement parseValue(@NotNull Object content) {
         try {
             return switch (content) {
-                case IntTag value -> new JsonPrimitive(value.getAsInt());
+                case NumericTag value -> new JsonPrimitive(value.getAsString());
                 case StringTag value -> {
                     try {
                         yield JsonParser.parseString(value.getAsString());
