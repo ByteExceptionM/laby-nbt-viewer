@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "io.masel"
-version = "2.0.0"
+version = "2.1.0"
 
 labyMod {
     defaultPackageName = "io.masel.nbtviewer"
@@ -16,7 +16,7 @@ labyMod {
         description =
             "LabyMod addon to view item nbt data in minecraft. Enable Advanced Tooltips (F3+H), hover over an item and press SHIFT. Magic starts..."
         minecraftVersion = "1.17.1<1.21.1"
-        version = System.getenv().getOrDefault("VERSION", "2.0.0")
+        version = System.getenv().getOrDefault("VERSION", "2.1.0")
     }
 
     minecraft {
