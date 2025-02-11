@@ -6,7 +6,7 @@ plugins {
 val versions = providers.gradleProperty("net.labymod.minecraft-versions").get().split(";")
 
 group = "io.masel"
-version = providers.environmentVariable("VERSION").getOrElse("2.1.0")
+version = providers.environmentVariable("VERSION").getOrElse("2.2.0")
 
 labyMod {
     defaultPackageName = "io.masel.nbtviewer"
@@ -16,7 +16,7 @@ labyMod {
         author = "ByteException_"
         description =
             "LabyMod addon to view item nbt data in minecraft. Enable Advanced Tooltips (F3+H), hover over an item and press SHIFT. Magic starts..."
-        minecraftVersion = "1.17.1<1.21.1"
+        minecraftVersion = "1.17.1<1.21.4"
         version = rootProject.version.toString()
     }
 
