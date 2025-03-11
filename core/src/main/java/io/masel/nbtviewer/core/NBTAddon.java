@@ -1,8 +1,8 @@
 package io.masel.nbtviewer.core;
 
 import io.masel.nbtviewer.api.INBTApi;
+import io.masel.nbtviewer.core.api.generated.ReferenceStorage;
 import io.masel.nbtviewer.core.config.NBTAddonConfiguration;
-import io.masel.nbtviewer.core.generated.DefaultReferenceStorage;
 import io.masel.nbtviewer.core.listener.ItemStackTooltipListener;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.models.addon.annotation.AddonMain;
@@ -14,7 +14,7 @@ public class NBTAddon extends LabyAddon<NBTAddonConfiguration> {
 
     @Override
     protected void load() {
-        this.nbtApi = ((DefaultReferenceStorage) this.referenceStorageAccessor()).inbtApi();
+        this.nbtApi = ((ReferenceStorage) this.referenceStorageAccessor()).inbtApi();
     }
 
     @Override
