@@ -109,7 +109,8 @@ public class ItemStackTooltipListener {
 
     @Subscribe
     public void onMouseScroll(MouseScrollEvent event) {
-        if (!Laby.labyAPI().minecraft().isKeyPressed(Key.L_SHIFT))
+        if (!Laby.labyAPI().minecraft().isKeyPressed(Key.L_SHIFT) ||
+                !Laby.labyAPI().minecraft().minecraftWindow().isScreenOpened())
             return;
 
         event.setCancelled(true);
