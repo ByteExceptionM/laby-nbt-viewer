@@ -41,16 +41,19 @@ public class ItemStackTooltipListener {
 
     @Subscribe
     public void onItemStackTooltip(ItemStackTooltipEvent event) {
-        if (!this.nbtApi.hasAdvancedToolsTips())
+        if (!this.nbtApi.hasAdvancedToolsTips()) {
             return;
+        }
 
-        if (!Laby.labyAPI().minecraft().isKeyPressed(Key.L_SHIFT))
+        if (!Laby.labyAPI().minecraft().isKeyPressed(Key.L_SHIFT)) {
             return;
+        }
 
         ItemStack itemStack = event.itemStack();
 
-        if (!itemStack.hasDataComponentContainer())
+        if (!itemStack.hasDataComponentContainer()) {
             return;
+        }
 
         Window window = Laby.labyAPI().minecraft().minecraftWindow();
 
@@ -64,17 +67,18 @@ public class ItemStackTooltipListener {
         if (this.nbtAddon.configuration().isOnlyShowCustomData().getOrDefault(false)) {
             DataComponentKey customDataKey = DataComponentKey.fromId("minecraft", "custom_data");
 
-            if (!components.has(customDataKey))
+            if (!components.has(customDataKey)) {
                 return;
+            }
 
             components = new NbtDataComponentContainer((NBTTagCompound) components.get(customDataKey));
         }
 
         String id = itemStack.getAsItem().getIdentifier().getNamespace() + components.hashCode();
 
-        if (!id.equals(lastTooltipId)) {
-            tooltipPage = 0;
-            lastTooltipId = id;
+        if (!id.equals(this.lastTooltipId)) {
+            this.tooltipPage = 0;
+            this.lastTooltipId = id;
         }
 
         String pretty = this.nbtApi.prettyPrint(components);
@@ -82,23 +86,23 @@ public class ItemStackTooltipListener {
         List<String> lines = List.of(pretty.split("\n"));
         int totalPages = Math.max(1, (int) Math.ceil((double) lines.size() / linesPerPage));
 
-        tooltipPage = Math.min(tooltipPage, totalPages - 1);
+        this.tooltipPage = Math.min(this.tooltipPage, totalPages - 1);
 
         List<Component> tooltipLines = event.getTooltipLines();
         tooltipLines.add(Component.empty());
 
-        for (int i = tooltipPage * linesPerPage; i < Math.min(lines.size(), (tooltipPage + 1) * linesPerPage); i++) {
+        for (int i = this.tooltipPage * linesPerPage; i < Math.min(lines.size(), (this.tooltipPage + 1) * linesPerPage); i++) {
             tooltipLines.add(Component.text(lines.get(i)));
         }
 
         if (totalPages > 1) {
             tooltipLines.add(Component.empty());
-            tooltipLines.add(getPageBar(totalPages));
+            tooltipLines.add(this.getPageBar(totalPages));
             tooltipLines.add(Component.empty());
 
             tooltipLines.add(
-                    Component.text("Page " + (tooltipPage + 1) + "/" + totalPages)
-                    .color(TextColor.color(Color.LIGHT_GRAY.get()))
+                    Component.text("Page " + (this.tooltipPage + 1) + "/" + totalPages)
+                            .color(TextColor.color(Color.LIGHT_GRAY.get()))
             );
         }
 
@@ -110,37 +114,39 @@ public class ItemStackTooltipListener {
     @Subscribe
     public void onMouseScroll(MouseScrollEvent event) {
         if (!Laby.labyAPI().minecraft().isKeyPressed(Key.L_SHIFT) ||
-                !Laby.labyAPI().minecraft().minecraftWindow().isScreenOpened())
+                !Laby.labyAPI().minecraft().minecraftWindow().isScreenOpened()) {
             return;
+        }
 
         event.setCancelled(true);
 
         double scrollDelta = event.delta();
 
         if (scrollDelta < 0) {
-            tooltipPage++;
+            this.tooltipPage++;
             return;
         }
 
-        if (scrollDelta <= 0 || tooltipPage <= 0)
+        if (scrollDelta <= 0 || this.tooltipPage <= 0) {
             return;
+        }
 
-        tooltipPage--;
+        this.tooltipPage--;
     }
 
     private Component getPageBar(int totalPages) {
-        Component bar = barOpeningBracket.copy();
+        Component bar = this.barOpeningBracket.copy();
 
         for (int i = 0; i < totalPages; i++) {
-            if (i == tooltipPage) {
-                bar.append(selectedPageIndicator);
+            if (i == this.tooltipPage) {
+                bar.append(this.selectedPageIndicator);
                 continue;
             }
 
-            bar.append(pageSymbol);
+            bar.append(this.pageSymbol);
         }
 
-        return bar.append(barClosingBracket);
+        return bar.append(this.barClosingBracket);
     }
 
 }
