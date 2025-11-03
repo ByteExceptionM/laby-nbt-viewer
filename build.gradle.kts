@@ -17,7 +17,7 @@ labyMod {
         author = "ByteException_"
         description =
             "LabyMod addon to view item nbt data in minecraft. Enable Advanced Tooltips (F3+H), hover over an item and press SHIFT. Magic starts..."
-        minecraftVersion = "1.17.1<1.21.8"
+        minecraftVersion = "1.17.1<1.21.10"
         version = rootProject.version.toString()
     }
 
