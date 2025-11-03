@@ -9,7 +9,8 @@ group = "io.masel"
 version = providers.environmentVariable("VERSION").getOrElse("2.4.0")
 
 labyMod {
-    defaultPackageName = "io.masel.nbtviewer.core"
+    defaultPackageName = "io.masel.nbtviewer"
+
     addonInfo {
         namespace = "nbt-viewer"
         displayName = "NBT Viewer"
