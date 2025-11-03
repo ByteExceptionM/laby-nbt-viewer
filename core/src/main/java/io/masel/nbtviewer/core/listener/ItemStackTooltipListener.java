@@ -4,6 +4,7 @@ import io.masel.nbtviewer.api.NBTApi;
 import io.masel.nbtviewer.core.NBTAddon;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
+import net.labymod.api.client.component.format.NamedTextColor;
 import net.labymod.api.client.component.format.TextColor;
 import net.labymod.api.client.gui.screen.key.Key;
 import net.labymod.api.client.gui.window.Window;
@@ -100,10 +101,12 @@ public class ItemStackTooltipListener {
             tooltipLines.add(this.getPageBar(totalPages));
             tooltipLines.add(Component.empty());
 
-            tooltipLines.add(
-                    Component.text("Page " + (this.tooltipPage + 1) + "/" + totalPages)
-                            .color(TextColor.color(Color.LIGHT_GRAY.get()))
-            );
+            tooltipLines.add(Component.translatable(
+                    "nbt-viewer.page",
+                    NamedTextColor.GRAY,
+                    Component.text(this.tooltipPage + 1),
+                    Component.text(totalPages)
+            ));
         }
 
         if (this.nbtAddon.configuration().isCopy().getOrDefault(false)) {
