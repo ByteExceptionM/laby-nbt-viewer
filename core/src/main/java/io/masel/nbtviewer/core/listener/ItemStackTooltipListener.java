@@ -1,6 +1,6 @@
 package io.masel.nbtviewer.core.listener;
 
-import io.masel.nbtviewer.api.INBTApi;
+import io.masel.nbtviewer.api.NBTApi;
 import io.masel.nbtviewer.core.NBTAddon;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
@@ -29,12 +29,12 @@ public class ItemStackTooltipListener {
     private final Component pageSymbol = Component.text("·").color(TextColor.color(Color.LIGHT_GRAY.get()));
 
     private final NBTAddon nbtAddon;
-    private final INBTApi nbtApi;
+    private final NBTApi nbtApi;
 
     private int tooltipPage = 0;
     private String lastTooltipId = "";
 
-    public ItemStackTooltipListener(NBTAddon nbtAddon, INBTApi nbtApi) {
+    public ItemStackTooltipListener(NBTAddon nbtAddon, NBTApi nbtApi) {
         this.nbtAddon = nbtAddon;
         this.nbtApi = nbtApi;
     }
