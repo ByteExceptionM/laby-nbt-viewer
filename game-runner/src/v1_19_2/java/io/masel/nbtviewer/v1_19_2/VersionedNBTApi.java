@@ -1,7 +1,7 @@
-package io.masel.nbtviewer.v1_21_5;
+package io.masel.nbtviewer.v1_19_2;
 
 import com.google.gson.*;
-import io.masel.nbtviewer.api.INBTApi;
+import io.masel.nbtviewer.api.NBTApi;
 import net.labymod.api.component.data.DataComponentContainer;
 import net.labymod.api.component.data.DataComponentKey;
 import net.labymod.api.models.Implements;
@@ -12,18 +12,14 @@ import net.minecraft.nbt.NumericTag;
 import net.minecraft.nbt.StringTag;
 import org.jetbrains.annotations.NotNull;
 
+import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-@Implements(INBTApi.class)
-public class NBTApiImpl implements INBTApi {
-
-    private final Gson gson = new GsonBuilder()
-            .serializeNulls()
-            .disableHtmlEscaping()
-            .setPrettyPrinting()
-            .create();
+@Singleton
+@Implements(NBTApi.class)
+public class VersionedNBTApi extends NBTApi {
 
     @Override
     public boolean hasAdvancedToolsTips() {
@@ -52,15 +48,15 @@ public class NBTApiImpl implements INBTApi {
     private JsonElement parseValue(@NotNull Object content) {
         try {
             return switch (content) {
-                case NumericTag value -> new JsonPrimitive(value.toString());
+                case NumericTag value -> new JsonPrimitive(value.getAsString());
                 case StringTag value -> {
                     try {
-                        yield JsonParser.parseString(value.toString());
+                        yield JsonParser.parseString(value.getAsString());
                     } catch (Throwable ignored) {
-                        yield new JsonPrimitive(value.toString());
+                        yield new JsonPrimitive(value.getAsString());
                     }
                 }
-                case CompoundTag value -> this.gson.fromJson(value.toString(), JsonObject.class);
+                case CompoundTag value -> this.gson.fromJson(value.getAsString(), JsonObject.class);
                 case ListTag value -> {
                     JsonArray jsonArray = new JsonArray();
 
@@ -78,5 +74,6 @@ public class NBTApiImpl implements INBTApi {
 
         return JsonNull.INSTANCE;
     }
+
 
 }

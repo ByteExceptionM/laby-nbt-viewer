@@ -1,10 +1,10 @@
 package io.masel.nbtviewer.core.listener;
 
-import io.masel.nbtviewer.api.INBTApi;
+import io.masel.nbtviewer.api.NBTApi;
 import io.masel.nbtviewer.core.NBTAddon;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
-import net.labymod.api.client.component.format.TextColor;
+import net.labymod.api.client.component.format.NamedTextColor;
 import net.labymod.api.client.gui.screen.key.Key;
 import net.labymod.api.client.gui.window.Window;
 import net.labymod.api.client.world.item.ItemStack;
@@ -15,7 +15,6 @@ import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.input.MouseScrollEvent;
 import net.labymod.api.event.client.world.ItemStackTooltipEvent;
 import net.labymod.api.nbt.tags.NBTTagCompound;
-import net.labymod.api.util.Color;
 
 import javax.inject.Singleton;
 import java.util.List;
@@ -23,18 +22,18 @@ import java.util.List;
 @Singleton
 public class ItemStackTooltipListener {
 
-    private final Component barOpeningBracket = Component.text("[").color(TextColor.color(Color.DARK_GRAY.get()));
-    private final Component barClosingBracket = Component.text("]").color(TextColor.color(Color.DARK_GRAY.get()));
-    private final Component selectedPageIndicator = Component.text("▮").color(TextColor.color(Color.WHITE.get()));
-    private final Component pageSymbol = Component.text("·").color(TextColor.color(Color.LIGHT_GRAY.get()));
+    private final Component barOpeningBracket = Component.text("[", NamedTextColor.DARK_GRAY);
+    private final Component barClosingBracket = Component.text("]", NamedTextColor.DARK_GRAY);
+    private final Component selectedPageIndicator = Component.text("▮", NamedTextColor.WHITE);
+    private final Component pageSymbol = Component.text("·", NamedTextColor.GRAY);
 
     private final NBTAddon nbtAddon;
-    private final INBTApi nbtApi;
+    private final NBTApi nbtApi;
 
     private int tooltipPage = 0;
     private String lastTooltipId = "";
 
-    public ItemStackTooltipListener(NBTAddon nbtAddon, INBTApi nbtApi) {
+    public ItemStackTooltipListener(NBTAddon nbtAddon, NBTApi nbtApi) {
         this.nbtAddon = nbtAddon;
         this.nbtApi = nbtApi;
     }
@@ -100,10 +99,12 @@ public class ItemStackTooltipListener {
             tooltipLines.add(this.getPageBar(totalPages));
             tooltipLines.add(Component.empty());
 
-            tooltipLines.add(
-                    Component.text("Page " + (this.tooltipPage + 1) + "/" + totalPages)
-                            .color(TextColor.color(Color.LIGHT_GRAY.get()))
-            );
+            tooltipLines.add(Component.translatable(
+                    "nbt-viewer.page",
+                    NamedTextColor.GRAY,
+                    Component.text(this.tooltipPage + 1),
+                    Component.text(totalPages)
+            ));
         }
 
         if (this.nbtAddon.configuration().isCopy().getOrDefault(false)) {

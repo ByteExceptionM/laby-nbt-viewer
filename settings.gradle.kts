@@ -1,7 +1,7 @@
-rootProject.name = "laby-nbt-addon"
+rootProject.name = "nbt-viewer"
 
 pluginManagement {
-    val labyGradlePluginVersion = "0.5.8"
+    val labyGradlePluginVersion = "0.5.9"
 
     buildscript {
         repositories {

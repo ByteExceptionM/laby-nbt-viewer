@@ -1,16 +1,17 @@
 {
-  "nbt-viewer": {
-    "settings": {
-      "name": "NBT Viewer",
-      "enabled": {
-        "name": "Aktiviert"
-      },
-      "copy": {
-        "name": "Kopieren"
-      },
-      "onlyShowCustomData": {
-        "name": "Zeige nur benutzerdefinierte Daten"
-      }
+    "nbt-viewer": {
+        "settings": {
+            "name": "NBT Viewer",
+            "enabled": {
+                "name": "Aktiviert"
+            },
+            "copy": {
+                "name": "Kopieren"
+            },
+            "onlyShowCustomData": {
+                "name": "Zeige nur benutzerdefinierte Daten"
+            }
+        },
+        "page": "Seite %s/%s"
     }
-  }
 }
