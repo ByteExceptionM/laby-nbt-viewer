@@ -12,6 +12,7 @@
         "name": "Syntax Highlighting"
       }
     },
-    "page": "Page %s/%s"
+    "page": "Page %s/%s",
+    "copy": "Shift+C to Copy"
   }
 }

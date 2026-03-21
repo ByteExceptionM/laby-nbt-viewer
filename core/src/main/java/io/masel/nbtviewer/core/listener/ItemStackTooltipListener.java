@@ -112,10 +112,10 @@ public class ItemStackTooltipListener {
                     NamedTextColor.GRAY,
                     Component.text(this.tooltipPage + 1),
                     Component.text(totalPages)
-            ).append(Component.text(" (Shift+C to Copy)", NamedTextColor.GRAY, TextDecoration.ITALIC)));
+            ).append(Component.text(" (")).append(Component.translatable("nbt-viewer.copy", NamedTextColor.GRAY, TextDecoration.ITALIC)).append(Component.text(")")));
         } else {
             tooltipLines.add(Component.empty());
-            tooltipLines.add(Component.text("Shift+C to Copy", NamedTextColor.GRAY, TextDecoration.ITALIC));
+            tooltipLines.add(Component.translatable("nbt-viewer.copy", NamedTextColor.GRAY, TextDecoration.ITALIC));
         }
 
         if (Laby.labyAPI().minecraft().isKeyPressed(Key.C)) {
