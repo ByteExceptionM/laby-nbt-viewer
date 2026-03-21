@@ -6,6 +6,7 @@ import io.masel.nbtviewer.core.util.JsonSyntaxHighlighter;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.NamedTextColor;
+import net.labymod.api.client.component.format.TextDecoration;
 import net.labymod.api.client.gui.screen.key.Key;
 import net.labymod.api.client.gui.window.Window;
 import net.labymod.api.client.world.item.ItemStack;
@@ -111,7 +112,10 @@ public class ItemStackTooltipListener {
                     NamedTextColor.GRAY,
                     Component.text(this.tooltipPage + 1),
                     Component.text(totalPages)
-            ));
+            ).append(Component.text(" (Shift+C to Copy)", NamedTextColor.GRAY, TextDecoration.ITALIC)));
+        } else {
+            tooltipLines.add(Component.empty());
+            tooltipLines.add(Component.text("Shift+C to Copy", NamedTextColor.GRAY, TextDecoration.ITALIC));
         }
 
         if (Laby.labyAPI().minecraft().isKeyPressed(Key.C)) {
