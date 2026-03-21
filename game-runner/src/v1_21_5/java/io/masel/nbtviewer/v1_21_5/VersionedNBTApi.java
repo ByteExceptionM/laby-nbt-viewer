@@ -51,18 +51,9 @@ public class VersionedNBTApi extends NBTApi {
                 case NumericTag value -> new JsonPrimitive(value.toString());
                 case StringTag value -> {
                     try {
-                        JsonElement parsed = JsonParser.parseString(value.toString());
-                        if (parsed.isJsonPrimitive() && parsed.getAsJsonPrimitive().isString()) {
-                            try {
-                                JsonElement innerParsed = JsonParser.parseString(parsed.getAsString());
-                                if (!innerParsed.isJsonPrimitive()) {
-                                    yield innerParsed;
-                                }
-                            } catch (Throwable innerIgnored) {}
-                        }
-                        yield parsed;
+                        yield JsonParser.parseString(value.value());
                     } catch (Throwable ignored) {
-                        yield new JsonPrimitive(value.toString());
+                        yield new JsonPrimitive(value.value());
                     }
                 }
                 case CompoundTag value -> this.gson.fromJson(value.toString(), JsonObject.class);

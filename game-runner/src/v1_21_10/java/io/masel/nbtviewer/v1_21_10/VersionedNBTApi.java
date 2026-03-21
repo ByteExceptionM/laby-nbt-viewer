@@ -49,13 +49,7 @@ public class VersionedNBTApi extends NBTApi {
         try {
             return switch (content) {
                 case NumericTag value -> new JsonPrimitive(value.toString());
-                case StringTag value -> {
-                    try {
-                        yield JsonParser.parseString(value.toString());
-                    } catch (Throwable ignored) {
-                        yield new JsonPrimitive(value.toString());
-                    }
-                }
+                case StringTag value -> new JsonPrimitive(value.value());
                 case CompoundTag value -> this.gson.fromJson(value.toString(), JsonObject.class);
                 case ListTag value -> {
                     JsonArray jsonArray = new JsonArray();

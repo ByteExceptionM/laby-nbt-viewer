@@ -2,6 +2,7 @@ package io.masel.nbtviewer.core.listener;
 
 import io.masel.nbtviewer.api.NBTApi;
 import io.masel.nbtviewer.core.NBTAddon;
+import io.masel.nbtviewer.core.util.JsonStringExpander;
 import io.masel.nbtviewer.core.util.JsonSyntaxHighlighter;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
@@ -83,7 +84,7 @@ public class ItemStackTooltipListener {
 
         boolean syntaxHighlighting = this.nbtAddon.configuration().isSyntaxHighlighting().getOrDefault(true);
 
-        String pretty = this.nbtApi.prettyPrint(components);
+        String pretty = JsonStringExpander.expand(this.nbtApi.prettyPrint(components));
 
         List<String> lines = List.of(pretty.split("\n"));
         int totalPages = Math.max(1, (int) Math.ceil((double) lines.size() / linesPerPage));
