@@ -1,4 +1,4 @@
-package io.masel.nbtviewer.v1_21_8;
+package io.masel.nbtviewer.v1_21_11;
 
 import com.google.gson.*;
 import io.masel.nbtviewer.api.INBTApi;
@@ -40,7 +40,7 @@ public class NBTApiImpl implements INBTApi {
         for (DataComponentKey dataComponentKey : dataComponentKeys) {
             Object value = components.get(dataComponentKey);
 
-            if (value == null || parseValue(value).isJsonNull())
+            if (value == null || this.parseValue(value).isJsonNull())
                 continue;
 
             jsonObject.add(dataComponentKey.name(), this.parseValue(value));

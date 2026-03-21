@@ -55,7 +55,16 @@ public class NBTApiImpl implements INBTApi {
                 case NumericTag value -> new JsonPrimitive(value.toString());
                 case StringTag value -> {
                     try {
-                        yield JsonParser.parseString(value.toString());
+                        JsonElement parsed = JsonParser.parseString(value.toString());
+                        if (parsed.isJsonPrimitive() && parsed.getAsJsonPrimitive().isString()) {
+                            try {
+                                JsonElement innerParsed = JsonParser.parseString(parsed.getAsString());
+                                if (!innerParsed.isJsonPrimitive()) {
+                                    yield innerParsed;
+                                }
+                            } catch (Throwable innerIgnored) {}
+                        }
+                        yield parsed;
                     } catch (Throwable ignored) {
                         yield new JsonPrimitive(value.toString());
                     }
