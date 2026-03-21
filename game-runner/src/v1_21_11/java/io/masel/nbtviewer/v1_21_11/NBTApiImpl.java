@@ -1,7 +1,7 @@
-package io.masel.nbtviewer.v1_21_5;
+package io.masel.nbtviewer.v1_21_11;
 
 import com.google.gson.*;
-import io.masel.nbtviewer.api.NBTApi;
+import io.masel.nbtviewer.api.INBTApi;
 import net.labymod.api.component.data.DataComponentContainer;
 import net.labymod.api.component.data.DataComponentKey;
 import net.labymod.api.models.Implements;
@@ -12,14 +12,18 @@ import net.minecraft.nbt.NumericTag;
 import net.minecraft.nbt.StringTag;
 import org.jetbrains.annotations.NotNull;
 
-import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-@Singleton
-@Implements(NBTApi.class)
-public class VersionedNBTApi extends NBTApi {
+@Implements(INBTApi.class)
+public class NBTApiImpl implements INBTApi {
+
+    private final Gson gson = new GsonBuilder()
+            .serializeNulls()
+            .disableHtmlEscaping()
+            .setPrettyPrinting()
+            .create();
 
     @Override
     public boolean hasAdvancedToolsTips() {
@@ -36,7 +40,7 @@ public class VersionedNBTApi extends NBTApi {
         for (DataComponentKey dataComponentKey : dataComponentKeys) {
             Object value = components.get(dataComponentKey);
 
-            if (value == null)
+            if (value == null || this.parseValue(value).isJsonNull())
                 continue;
 
             jsonObject.add(dataComponentKey.name(), this.parseValue(value));
