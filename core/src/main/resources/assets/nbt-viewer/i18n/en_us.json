@@ -10,6 +10,9 @@
       },
       "onlyShowCustomData": {
         "name": "Only Show Custom Data"
+      },
+      "syntaxHighlighting": {
+        "name": "Syntax Highlighting"
       }
     }
   }

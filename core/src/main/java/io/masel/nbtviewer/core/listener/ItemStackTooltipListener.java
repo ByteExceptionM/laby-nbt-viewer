@@ -2,6 +2,7 @@ package io.masel.nbtviewer.core.listener;
 
 import io.masel.nbtviewer.api.INBTApi;
 import io.masel.nbtviewer.core.NBTAddon;
+import io.masel.nbtviewer.core.util.JsonSyntaxHighlighter;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.TextColor;
@@ -81,6 +82,8 @@ public class ItemStackTooltipListener {
             this.lastTooltipId = id;
         }
 
+        boolean syntaxHighlighting = this.nbtAddon.configuration().isSyntaxHighlighting().getOrDefault(true);
+
         String pretty = this.nbtApi.prettyPrint(components);
 
         List<String> lines = List.of(pretty.split("\n"));
@@ -92,7 +95,11 @@ public class ItemStackTooltipListener {
         tooltipLines.add(Component.empty());
 
         for (int i = this.tooltipPage * linesPerPage; i < Math.min(lines.size(), (this.tooltipPage + 1) * linesPerPage); i++) {
-            tooltipLines.add(Component.text(lines.get(i)));
+            if (syntaxHighlighting) {
+                tooltipLines.add(JsonSyntaxHighlighter.highlightLine(lines.get(i)));
+            } else {
+                tooltipLines.add(Component.text(lines.get(i)));
+            }
         }
 
         if (totalPages > 1) {

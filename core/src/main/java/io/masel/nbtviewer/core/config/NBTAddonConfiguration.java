@@ -17,6 +17,9 @@ public class NBTAddonConfiguration extends AddonConfig {
     @SwitchSetting
     private final ConfigProperty<Boolean> onlyShowCustomData = new ConfigProperty<>(false);
 
+    @SwitchSetting
+    private final ConfigProperty<Boolean> syntaxHighlighting = new ConfigProperty<>(true);
+
     @Override
     public ConfigProperty<Boolean> enabled() {
         return this.enabled;
@@ -28,6 +31,10 @@ public class NBTAddonConfiguration extends AddonConfig {
 
     public ConfigProperty<Boolean> isOnlyShowCustomData() {
         return this.onlyShowCustomData;
+    }
+
+    public ConfigProperty<Boolean> isSyntaxHighlighting() {
+        return this.syntaxHighlighting;
     }
 
 }
