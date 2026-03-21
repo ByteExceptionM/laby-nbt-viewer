@@ -2,9 +2,11 @@ package io.masel.nbtviewer.core.listener;
 
 import io.masel.nbtviewer.api.NBTApi;
 import io.masel.nbtviewer.core.NBTAddon;
+import io.masel.nbtviewer.core.util.JsonSyntaxHighlighter;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.NamedTextColor;
+import net.labymod.api.client.component.format.TextDecoration;
 import net.labymod.api.client.gui.screen.key.Key;
 import net.labymod.api.client.gui.window.Window;
 import net.labymod.api.client.world.item.ItemStack;
@@ -80,7 +82,9 @@ public class ItemStackTooltipListener {
             this.lastTooltipId = id;
         }
 
-        String pretty = this.nbtApi.prettyPrint(components);
+        boolean syntaxHighlighting = this.nbtAddon.configuration().isSyntaxHighlighting().getOrDefault(true);
+
+        String pretty = this.nbtApi.expandedPrettyPrint(components);
 
         List<String> lines = List.of(pretty.split("\n"));
         int totalPages = Math.max(1, (int) Math.ceil((double) lines.size() / linesPerPage));
@@ -91,7 +95,11 @@ public class ItemStackTooltipListener {
         tooltipLines.add(Component.empty());
 
         for (int i = this.tooltipPage * linesPerPage; i < Math.min(lines.size(), (this.tooltipPage + 1) * linesPerPage); i++) {
-            tooltipLines.add(Component.text(lines.get(i)));
+            if (syntaxHighlighting) {
+                tooltipLines.add(JsonSyntaxHighlighter.highlightLine(lines.get(i)));
+            } else {
+                tooltipLines.add(Component.text(lines.get(i)));
+            }
         }
 
         if (totalPages > 1) {
@@ -104,10 +112,13 @@ public class ItemStackTooltipListener {
                     NamedTextColor.GRAY,
                     Component.text(this.tooltipPage + 1),
                     Component.text(totalPages)
-            ));
+            ).append(Component.text(" (Shift+C to Copy)", NamedTextColor.GRAY, TextDecoration.ITALIC)));
+        } else {
+            tooltipLines.add(Component.empty());
+            tooltipLines.add(Component.text("Shift+C to Copy", NamedTextColor.GRAY, TextDecoration.ITALIC));
         }
 
-        if (this.nbtAddon.configuration().isCopy().getOrDefault(false)) {
+        if (Laby.labyAPI().minecraft().isKeyPressed(Key.C)) {
             Laby.labyAPI().minecraft().setClipboard(pretty);
         }
     }

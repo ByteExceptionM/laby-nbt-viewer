@@ -1,17 +1,17 @@
 {
-    "nbt-viewer": {
-        "settings": {
-            "name": "NBT Viewer",
-            "enabled": {
-                "name": "Enabled"
-            },
-            "copy": {
-                "name": "Copy"
-            },
-            "onlyShowCustomData": {
-                "name": "Only Show Custom Data"
-            }
-        },
-        "page": "Page %s/%s"
-    }
+  "nbt-viewer": {
+    "settings": {
+      "name": "NBT Viewer",
+      "enabled": {
+        "name": "Enabled"
+      },
+      "onlyShowCustomData": {
+        "name": "Only Show Custom Data"
+      },
+      "syntaxHighlighting": {
+        "name": "Syntax Highlighting"
+      }
+    },
+    "page": "Page %s/%s"
+  }
 }

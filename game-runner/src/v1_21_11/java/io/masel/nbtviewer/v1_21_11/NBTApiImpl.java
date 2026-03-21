@@ -1,7 +1,7 @@
 package io.masel.nbtviewer.v1_21_11;
 
 import com.google.gson.*;
-import io.masel.nbtviewer.api.INBTApi;
+import io.masel.nbtviewer.api.NBTApi;
 import net.labymod.api.component.data.DataComponentContainer;
 import net.labymod.api.component.data.DataComponentKey;
 import net.labymod.api.models.Implements;
@@ -16,14 +16,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-@Implements(INBTApi.class)
-public class NBTApiImpl implements INBTApi {
-
-    private final Gson gson = new GsonBuilder()
-            .serializeNulls()
-            .disableHtmlEscaping()
-            .setPrettyPrinting()
-            .create();
+@Implements(NBTApi.class)
+public class NBTApiImpl extends NBTApi {
 
     @Override
     public boolean hasAdvancedToolsTips() {
@@ -53,22 +47,7 @@ public class NBTApiImpl implements INBTApi {
         try {
             return switch (content) {
                 case NumericTag value -> new JsonPrimitive(value.toString());
-                case StringTag value -> {
-                    try {
-                        JsonElement parsed = JsonParser.parseString(value.toString());
-                        if (parsed.isJsonPrimitive() && parsed.getAsJsonPrimitive().isString()) {
-                            try {
-                                JsonElement innerParsed = JsonParser.parseString(parsed.getAsString());
-                                if (!innerParsed.isJsonPrimitive()) {
-                                    yield innerParsed;
-                                }
-                            } catch (Throwable innerIgnored) {}
-                        }
-                        yield parsed;
-                    } catch (Throwable ignored) {
-                        yield new JsonPrimitive(value.toString());
-                    }
-                }
+                case StringTag value -> new JsonPrimitive(value.value());
                 case CompoundTag value -> this.gson.fromJson(value.toString(), JsonObject.class);
                 case ListTag value -> {
                     JsonArray jsonArray = new JsonArray();

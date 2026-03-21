@@ -12,22 +12,22 @@ public class NBTAddonConfiguration extends AddonConfig {
     private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
 
     @SwitchSetting
-    private final ConfigProperty<Boolean> copy = new ConfigProperty<>(false);
+    private final ConfigProperty<Boolean> onlyShowCustomData = new ConfigProperty<>(false);
 
     @SwitchSetting
-    private final ConfigProperty<Boolean> onlyShowCustomData = new ConfigProperty<>(false);
+    private final ConfigProperty<Boolean> syntaxHighlighting = new ConfigProperty<>(true);
 
     @Override
     public ConfigProperty<Boolean> enabled() {
         return this.enabled;
     }
 
-    public ConfigProperty<Boolean> isCopy() {
-        return this.copy;
-    }
-
     public ConfigProperty<Boolean> isOnlyShowCustomData() {
         return this.onlyShowCustomData;
+    }
+
+    public ConfigProperty<Boolean> isSyntaxHighlighting() {
+        return this.syntaxHighlighting;
     }
 
 }
