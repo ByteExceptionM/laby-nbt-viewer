@@ -12,9 +12,6 @@ public class NBTAddonConfiguration extends AddonConfig {
     private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
 
     @SwitchSetting
-    private final ConfigProperty<Boolean> copy = new ConfigProperty<>(false);
-
-    @SwitchSetting
     private final ConfigProperty<Boolean> onlyShowCustomData = new ConfigProperty<>(false);
 
     @SwitchSetting
@@ -23,10 +20,6 @@ public class NBTAddonConfiguration extends AddonConfig {
     @Override
     public ConfigProperty<Boolean> enabled() {
         return this.enabled;
-    }
-
-    public ConfigProperty<Boolean> isCopy() {
-        return this.copy;
     }
 
     public ConfigProperty<Boolean> isOnlyShowCustomData() {

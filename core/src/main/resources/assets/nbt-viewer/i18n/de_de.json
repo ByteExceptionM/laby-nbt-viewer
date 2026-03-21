@@ -5,9 +5,6 @@
       "enabled": {
         "name": "Aktiviert"
       },
-      "copy": {
-        "name": "Kopieren"
-      },
       "onlyShowCustomData": {
         "name": "Zeige nur benutzerdefinierte Daten"
       },

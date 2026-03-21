@@ -2,7 +2,6 @@ package io.masel.nbtviewer.core.listener;
 
 import io.masel.nbtviewer.api.NBTApi;
 import io.masel.nbtviewer.core.NBTAddon;
-import io.masel.nbtviewer.core.util.JsonStringExpander;
 import io.masel.nbtviewer.core.util.JsonSyntaxHighlighter;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
@@ -84,7 +83,7 @@ public class ItemStackTooltipListener {
 
         boolean syntaxHighlighting = this.nbtAddon.configuration().isSyntaxHighlighting().getOrDefault(true);
 
-        String pretty = JsonStringExpander.expand(this.nbtApi.prettyPrint(components));
+        String pretty = this.nbtApi.expandedPrettyPrint(components);
 
         List<String> lines = List.of(pretty.split("\n"));
         int totalPages = Math.max(1, (int) Math.ceil((double) lines.size() / linesPerPage));
@@ -115,7 +114,7 @@ public class ItemStackTooltipListener {
             ));
         }
 
-        if (this.nbtAddon.configuration().isCopy().getOrDefault(false)) {
+        if (Laby.labyAPI().minecraft().isKeyPressed(Key.C)) {
             Laby.labyAPI().minecraft().setClipboard(pretty);
         }
     }

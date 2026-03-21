@@ -5,9 +5,6 @@
       "enabled": {
         "name": "Enabled"
       },
-      "copy": {
-        "name": "Copy"
-      },
       "onlyShowCustomData": {
         "name": "Only Show Custom Data"
       },
