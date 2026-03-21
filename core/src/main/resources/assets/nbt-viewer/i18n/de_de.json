@@ -12,6 +12,7 @@
         "name": "Syntaxhervorhebung"
       }
     },
-    "page": "Seite %s/%s"
+    "page": "Seite %s/%s",
+    "copy": "Shift+C zum Kopieren"
   }
 }
