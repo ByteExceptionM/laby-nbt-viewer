@@ -13,8 +13,8 @@
       },
       "syntaxHighlighting": {
         "name": "Syntax Highlighting"
-      },
-      "page": "Page %s/%s"
-    }
+      }
+    },
+    "page": "Page %s/%s"
   }
 }
