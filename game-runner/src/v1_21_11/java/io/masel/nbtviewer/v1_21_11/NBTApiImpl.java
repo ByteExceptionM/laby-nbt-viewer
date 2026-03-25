@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+@Singleton
 @Implements(NBTApi.class)
 public class NBTApiImpl extends NBTApi {
 
