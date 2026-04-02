@@ -1,18 +1,17 @@
-package io.masel.nbtviewer.core.util;
+package io.masel.nbtviewer.api;
 
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.TextColor;
 
 public class JsonSyntaxHighlighter {
 
-    private static final TextColor KEY_COLOR = TextColor.color(0x55FFFF);
-    private static final TextColor STRING_COLOR = TextColor.color(0x55FF55);
-    private static final TextColor NUMBER_COLOR = TextColor.color(0xFFAA00);
-    private static final TextColor BOOL_NULL_COLOR = TextColor.color(0xFF5555);
-    private static final TextColor BRACKET_COLOR = TextColor.color(0xFFFFFF);
-    private static final TextColor PUNCTUATION_COLOR = TextColor.color(0x555555);
+    public record SyntaxColors(
+            TextColor key, TextColor string, TextColor number,
+            TextColor boolNull, TextColor bracket, TextColor punctuation
+    ) {
+    }
 
-    public static Component highlightLine(String line) {
+    public static Component highlightLine(String line, SyntaxColors colors) {
         Component result = Component.empty();
 
         String trimmed = line.stripLeading();
@@ -27,7 +26,7 @@ public class JsonSyntaxHighlighter {
         }
 
         if (isStructuralLine(trimmed)) {
-            result.append(Component.text(trimmed).color(BRACKET_COLOR));
+            result.append(Component.text(trimmed).color(colors.bracket()));
             return result;
         }
 
@@ -35,13 +34,13 @@ public class JsonSyntaxHighlighter {
 
         if (colonIndex != -1) {
             String key = trimmed.substring(0, colonIndex);
-            result.append(Component.text(key).color(KEY_COLOR));
-            result.append(Component.text(": ").color(PUNCTUATION_COLOR));
+            result.append(Component.text(key).color(colors.key()));
+            result.append(Component.text(": ").color(colors.punctuation()));
 
             String valuePart = trimmed.substring(colonIndex + 2);
-            appendValue(result, valuePart);
+            appendValue(result, valuePart, colors);
         } else {
-            appendValue(result, trimmed);
+            appendValue(result, trimmed, colors);
         }
 
         return result;
@@ -82,38 +81,61 @@ public class JsonSyntaxHighlighter {
         return -1;
     }
 
-    private static void appendValue(Component result, String rawValue) {
+    private static void appendValue(Component result, String rawValue, SyntaxColors colors) {
         boolean hasTrailingComma = rawValue.endsWith(",");
         String value = hasTrailingComma ? rawValue.substring(0, rawValue.length() - 1) : rawValue;
 
         TextColor color;
         if (value.startsWith("\"")) {
-            color = STRING_COLOR;
+            color = colors.string();
         } else if (value.equals("true") || value.equals("false") || value.equals("null")) {
-            color = BOOL_NULL_COLOR;
+            color = colors.boolNull();
         } else if (value.equals("{") || value.equals("}") || value.equals("[") || value.equals("]")
                 || value.equals("{}") || value.equals("[]")) {
-            color = BRACKET_COLOR;
+            color = colors.bracket();
         } else if (isNumeric(value)) {
-            color = NUMBER_COLOR;
+            color = colors.number();
         } else {
-            color = STRING_COLOR;
+            color = colors.string();
         }
 
         result.append(Component.text(value).color(color));
 
         if (hasTrailingComma) {
-            result.append(Component.text(",").color(PUNCTUATION_COLOR));
+            result.append(Component.text(",").color(colors.punctuation()));
         }
     }
 
     private static boolean isNumeric(String value) {
-        try {
-            Double.parseDouble(value);
-            return true;
-        } catch (NumberFormatException ignored) {
+        if (value.isEmpty()) {
             return false;
         }
+
+        int i = 0;
+        if (value.charAt(0) == '-' || value.charAt(0) == '+') {
+            i++;
+        }
+
+        boolean hasDigit = false;
+        boolean hasDot = false;
+
+        for (; i < value.length(); i++) {
+            char c = value.charAt(i);
+            if (c >= '0' && c <= '9') {
+                hasDigit = true;
+            } else if (c == '.' && !hasDot) {
+                hasDot = true;
+            } else if ((c == 'e' || c == 'E') && hasDigit) {
+                hasDigit = false;
+                if (i + 1 < value.length() && (value.charAt(i + 1) == '+' || value.charAt(i + 1) == '-')) {
+                    i++;
+                }
+            } else {
+                return false;
+            }
+        }
+
+        return hasDigit;
     }
 
 }

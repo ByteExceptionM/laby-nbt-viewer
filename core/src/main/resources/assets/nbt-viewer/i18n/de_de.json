@@ -12,9 +12,21 @@
         "name": "Syntaxhervorhebung"
       },
       "header": {
+        "display": {
+          "name": "Anzeige"
+        },
         "pagination": {
           "name": "Seitenumbruch"
+        },
+        "colors": {
+          "name": "Farben"
         }
+      },
+      "hideEmptyValues": {
+        "name": "Leere Werte ausblenden"
+      },
+      "autoCollapseArrays": {
+        "name": "Arrays automatisch einklappen"
       },
       "paginationMode": {
         "name": "Modus",
@@ -23,9 +35,28 @@
       },
       "linesPerPage": {
         "name": "Zeilen pro Seite"
+      },
+      "keyColor": {
+        "name": "Schlüssel-Farbe"
+      },
+      "stringColor": {
+        "name": "Text-Farbe"
+      },
+      "numberColor": {
+        "name": "Zahlen-Farbe"
+      },
+      "boolNullColor": {
+        "name": "Boolean/Null-Farbe"
+      },
+      "bracketColor": {
+        "name": "Klammer-Farbe"
+      },
+      "punctuationColor": {
+        "name": "Satzzeichen-Farbe"
       }
     },
     "page": "Seite %s/%s",
-    "copy": "Shift+C zum Kopieren"
+    "copy": "Shift+C zum Kopieren",
+    "copied": "In Zwischenablage kopiert"
   }
 }
