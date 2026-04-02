@@ -11,7 +11,9 @@ import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.NamedTextColor;
 import net.labymod.api.client.component.format.TextColor;
 import net.labymod.api.client.component.format.TextDecoration;
+import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.gui.screen.key.Key;
+import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.notification.Notification;
 import net.labymod.api.component.data.DataComponentContainer;
@@ -21,6 +23,7 @@ import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.input.MouseScrollEvent;
 import net.labymod.api.event.client.world.ItemStackTooltipEvent;
 import net.labymod.api.nbt.tags.NBTTagCompound;
+import net.labymod.api.notification.NotificationType;
 
 import javax.inject.Singleton;
 import java.util.List;
@@ -149,7 +152,8 @@ public class ItemStackTooltipListener {
             Notification.builder()
                     .title(Component.text("NBT Viewer"))
                     .text(Component.translatable("nbt-viewer.copied"))
-                    .duration(2000)
+                    .duration(3500)
+                    .icon(Icon.texture(ResourceLocation.create("nbt-viewer", "textures/icon.png")))
                     .buildAndPush();
         }
         this.wasCPressed = cPressed;
