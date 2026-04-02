@@ -10,6 +10,19 @@
       },
       "syntaxHighlighting": {
         "name": "Syntaxhervorhebung"
+      },
+      "header": {
+        "pagination": {
+          "name": "Seitenumbruch"
+        }
+      },
+      "paginationMode": {
+        "name": "Modus",
+        "auto": "Automatisch",
+        "fixed": "Manuell"
+      },
+      "linesPerPage": {
+        "name": "Zeilen pro Seite"
       }
     },
     "page": "Seite %s/%s",

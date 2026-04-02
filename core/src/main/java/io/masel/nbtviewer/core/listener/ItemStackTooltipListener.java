@@ -2,13 +2,13 @@ package io.masel.nbtviewer.core.listener;
 
 import io.masel.nbtviewer.api.NBTApi;
 import io.masel.nbtviewer.core.NBTAddon;
+import io.masel.nbtviewer.core.config.NBTAddonConfiguration.PaginationMode;
 import io.masel.nbtviewer.core.util.JsonSyntaxHighlighter;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.NamedTextColor;
 import net.labymod.api.client.component.format.TextDecoration;
 import net.labymod.api.client.gui.screen.key.Key;
-import net.labymod.api.client.gui.window.Window;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.component.data.DataComponentContainer;
 import net.labymod.api.component.data.DataComponentKey;
@@ -34,6 +34,9 @@ public class ItemStackTooltipListener {
 
     private int tooltipPage = 0;
     private String lastTooltipId = "";
+    private String cachedPretty = "";
+    private List<String> cachedLines = List.of();
+    private boolean wasCPressed = false;
 
     public ItemStackTooltipListener(NBTAddon nbtAddon, NBTApi nbtApi) {
         this.nbtAddon = nbtAddon;
@@ -56,12 +59,13 @@ public class ItemStackTooltipListener {
             return;
         }
 
-        Window window = Laby.labyAPI().minecraft().minecraftWindow();
-
-        float guiScaleFloat = window.getScale();
-        int guiScale = Math.max(1, Math.round(guiScaleFloat));
-
-        int linesPerPage = Math.max(3, 45 / guiScale);
+        int linesPerPage;
+        if (this.nbtAddon.configuration().getPaginationMode().getOrDefault(PaginationMode.AUTO) == PaginationMode.AUTO) {
+            float guiScale = Laby.labyAPI().minecraft().minecraftWindow().getScale();
+            linesPerPage = Math.max(3, 45 / Math.max(1, Math.round(guiScale)));
+        } else {
+            linesPerPage = this.nbtAddon.configuration().getLinesPerPage().get();
+        }
 
         DataComponentContainer components = itemStack.getDataComponentContainer();
 
@@ -80,13 +84,13 @@ public class ItemStackTooltipListener {
         if (!id.equals(this.lastTooltipId)) {
             this.tooltipPage = 0;
             this.lastTooltipId = id;
+            this.cachedPretty = this.nbtApi.expandedPrettyPrint(components);
+            this.cachedLines = List.of(this.cachedPretty.split("\n"));
         }
 
         boolean syntaxHighlighting = this.nbtAddon.configuration().isSyntaxHighlighting().getOrDefault(true);
 
-        String pretty = this.nbtApi.expandedPrettyPrint(components);
-
-        List<String> lines = List.of(pretty.split("\n"));
+        List<String> lines = this.cachedLines;
         int totalPages = Math.max(1, (int) Math.ceil((double) lines.size() / linesPerPage));
 
         this.tooltipPage = Math.min(this.tooltipPage, totalPages - 1);
@@ -118,9 +122,11 @@ public class ItemStackTooltipListener {
             tooltipLines.add(Component.translatable("nbt-viewer.copy", NamedTextColor.GRAY, TextDecoration.ITALIC));
         }
 
-        if (Laby.labyAPI().minecraft().isKeyPressed(Key.C)) {
-            Laby.labyAPI().minecraft().setClipboard(pretty);
+        boolean cPressed = Laby.labyAPI().minecraft().isKeyPressed(Key.C);
+        if (cPressed && !this.wasCPressed) {
+            Laby.labyAPI().minecraft().setClipboard(this.cachedPretty);
         }
+        this.wasCPressed = cPressed;
     }
 
     @Subscribe
