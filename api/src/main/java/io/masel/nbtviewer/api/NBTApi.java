@@ -31,17 +31,79 @@ public abstract class NBTApi {
     public abstract String prettyPrint(DataComponentContainer components);
 
     public String expandedPrettyPrint(DataComponentContainer components) {
-        return this.expandJsonStrings(this.prettyPrint(components));
+        return this.expandedPrettyPrint(components, false, false);
     }
 
-    private String expandJsonStrings(String json) {
+    public String expandedPrettyPrint(DataComponentContainer components, boolean hideEmpty, boolean collapseArrays) {
         try {
-            JsonElement element = JsonParser.parseString(json);
+            JsonElement element = JsonParser.parseString(this.prettyPrint(components));
             JsonElement expanded = this.expandElement(element);
+            if (hideEmpty) {
+                expanded = this.removeEmptyValues(expanded);
+            }
+            if (collapseArrays) {
+                expanded = this.collapseArrays(expanded);
+            }
             return this.gson.toJson(expanded);
         } catch (Throwable ignored) {
-            return json;
+            return this.prettyPrint(components);
         }
+    }
+
+    private JsonElement removeEmptyValues(JsonElement element) {
+        if (element.isJsonObject()) {
+            JsonObject result = new JsonObject();
+            for (Map.Entry<String, JsonElement> entry : element.getAsJsonObject().entrySet()) {
+                JsonElement cleaned = this.removeEmptyValues(entry.getValue());
+                if (!this.isEmpty(cleaned)) {
+                    result.add(entry.getKey(), cleaned);
+                }
+            }
+            return result;
+        }
+        if (element.isJsonArray()) {
+            JsonArray result = new JsonArray();
+            for (JsonElement child : element.getAsJsonArray()) {
+                result.add(this.removeEmptyValues(child));
+            }
+            return result;
+        }
+        return element;
+    }
+
+    private boolean isEmpty(JsonElement element) {
+        if (element.isJsonObject()) {
+            return element.getAsJsonObject().isEmpty();
+        }
+        if (element.isJsonArray()) {
+            return element.getAsJsonArray().isEmpty();
+        }
+        if (element.isJsonPrimitive() && element.getAsJsonPrimitive().isString()) {
+            return element.getAsString().isEmpty();
+        }
+        return false;
+    }
+
+    private JsonElement collapseArrays(JsonElement element) {
+        if (element.isJsonObject()) {
+            JsonObject result = new JsonObject();
+            for (Map.Entry<String, JsonElement> entry : element.getAsJsonObject().entrySet()) {
+                result.add(entry.getKey(), this.collapseArrays(entry.getValue()));
+            }
+            return result;
+        }
+        if (element.isJsonArray()) {
+            JsonArray array = element.getAsJsonArray();
+            if (array.size() >= 10) {
+                return new JsonPrimitive("[... " + array.size() + " items]");
+            }
+            JsonArray result = new JsonArray();
+            for (JsonElement child : array) {
+                result.add(this.collapseArrays(child));
+            }
+            return result;
+        }
+        return element;
     }
 
     private JsonElement expandElement(JsonElement element) {

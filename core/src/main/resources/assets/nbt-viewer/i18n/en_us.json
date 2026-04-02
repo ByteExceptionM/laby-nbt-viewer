@@ -10,9 +10,53 @@
       },
       "syntaxHighlighting": {
         "name": "Syntax Highlighting"
+      },
+      "header": {
+        "display": {
+          "name": "Display"
+        },
+        "pagination": {
+          "name": "Pagination"
+        },
+        "colors": {
+          "name": "Colors"
+        }
+      },
+      "hideEmptyValues": {
+        "name": "Hide Empty Values"
+      },
+      "autoCollapseArrays": {
+        "name": "Auto-Collapse Arrays"
+      },
+      "paginationMode": {
+        "name": "Mode",
+        "auto": "Auto",
+        "fixed": "Fixed"
+      },
+      "linesPerPage": {
+        "name": "Lines per Page"
+      },
+      "keyColor": {
+        "name": "Key Color"
+      },
+      "stringColor": {
+        "name": "String Color"
+      },
+      "numberColor": {
+        "name": "Number Color"
+      },
+      "boolNullColor": {
+        "name": "Boolean/Null Color"
+      },
+      "bracketColor": {
+        "name": "Bracket Color"
+      },
+      "punctuationColor": {
+        "name": "Punctuation Color"
       }
     },
     "page": "Page %s/%s",
-    "copy": "Shift+C to Copy"
+    "copy": "Shift+C to Copy",
+    "copied": "Copied to clipboard"
   }
 }
