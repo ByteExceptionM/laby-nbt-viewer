@@ -3,13 +3,17 @@ package io.masel.nbtviewer.core.listener;
 import io.masel.nbtviewer.api.NBTApi;
 import io.masel.nbtviewer.core.NBTAddon;
 import io.masel.nbtviewer.core.config.NBTAddonConfiguration.PaginationMode;
-import io.masel.nbtviewer.core.util.JsonSyntaxHighlighter;
+import io.masel.nbtviewer.core.config.NBTAddonConfiguration;
+import io.masel.nbtviewer.api.JsonSyntaxHighlighter;
+import io.masel.nbtviewer.api.JsonSyntaxHighlighter.SyntaxColors;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.NamedTextColor;
+import net.labymod.api.client.component.format.TextColor;
 import net.labymod.api.client.component.format.TextDecoration;
 import net.labymod.api.client.gui.screen.key.Key;
 import net.labymod.api.client.world.item.ItemStack;
+import net.labymod.api.notification.Notification;
 import net.labymod.api.component.data.DataComponentContainer;
 import net.labymod.api.component.data.DataComponentKey;
 import net.labymod.api.component.data.NbtDataComponentContainer;
@@ -36,6 +40,7 @@ public class ItemStackTooltipListener {
     private String lastTooltipId = "";
     private String cachedPretty = "";
     private List<String> cachedLines = List.of();
+    private SyntaxColors cachedColors;
     private boolean wasCPressed = false;
 
     public ItemStackTooltipListener(NBTAddon nbtAddon, NBTApi nbtApi) {
@@ -59,9 +64,11 @@ public class ItemStackTooltipListener {
             return;
         }
 
+        NBTAddonConfiguration config = this.nbtAddon.configuration();
+
         DataComponentContainer components = itemStack.getDataComponentContainer();
 
-        if (this.nbtAddon.configuration().isOnlyShowCustomData().getOrDefault(false)) {
+        if (config.isOnlyShowCustomData().getOrDefault(false)) {
             DataComponentKey customDataKey = DataComponentKey.fromId("minecraft", "custom_data");
 
             if (!components.has(customDataKey)) {
@@ -71,24 +78,37 @@ public class ItemStackTooltipListener {
             components = new NbtDataComponentContainer((NBTTagCompound) components.get(customDataKey));
         }
 
-        String id = itemStack.getAsItem().getIdentifier().getNamespace() + components.hashCode();
+        boolean hideEmpty = config.isHideEmptyValues().getOrDefault(true);
+        boolean collapseArrays = config.isAutoCollapseArrays().getOrDefault(true);
+
+        String id = itemStack.getAsItem().getIdentifier().getNamespace()
+                + "|" + components.hashCode() + "|" + hideEmpty + "|" + collapseArrays;
 
         if (!id.equals(this.lastTooltipId)) {
             this.tooltipPage = 0;
             this.lastTooltipId = id;
-            this.cachedPretty = this.nbtApi.expandedPrettyPrint(components);
+            this.cachedPretty = this.nbtApi.expandedPrettyPrint(components, hideEmpty, collapseArrays);
             this.cachedLines = List.of(this.cachedPretty.split("\n"));
+            this.cachedColors = new SyntaxColors(
+                    TextColor.color(config.getKeyColor().get().get()),
+                    TextColor.color(config.getStringColor().get().get()),
+                    TextColor.color(config.getNumberColor().get().get()),
+                    TextColor.color(config.getBoolNullColor().get().get()),
+                    TextColor.color(config.getBracketColor().get().get()),
+                    TextColor.color(config.getPunctuationColor().get().get())
+            );
         }
 
         int linesPerPage;
-        if (this.nbtAddon.configuration().getPaginationMode().getOrDefault(PaginationMode.AUTO) == PaginationMode.AUTO) {
+        if (config.getPaginationMode().getOrDefault(PaginationMode.AUTO) == PaginationMode.AUTO) {
             float guiScale = Laby.labyAPI().minecraft().minecraftWindow().getScale();
             linesPerPage = Math.max(3, 45 / Math.max(1, Math.round(guiScale)));
         } else {
-            linesPerPage = this.nbtAddon.configuration().getLinesPerPage().get();
+            linesPerPage = config.getLinesPerPage().get();
         }
 
-        boolean syntaxHighlighting = this.nbtAddon.configuration().isSyntaxHighlighting().getOrDefault(true);
+        SyntaxColors colors = config.isSyntaxHighlighting().getOrDefault(true)
+                ? this.cachedColors : null;
 
         List<String> lines = this.cachedLines;
         int totalPages = Math.max(1, (int) Math.ceil((double) lines.size() / linesPerPage));
@@ -99,8 +119,8 @@ public class ItemStackTooltipListener {
         tooltipLines.add(Component.empty());
 
         for (int i = this.tooltipPage * linesPerPage; i < Math.min(lines.size(), (this.tooltipPage + 1) * linesPerPage); i++) {
-            if (syntaxHighlighting) {
-                tooltipLines.add(JsonSyntaxHighlighter.highlightLine(lines.get(i)));
+            if (colors != null) {
+                tooltipLines.add(JsonSyntaxHighlighter.highlightLine(lines.get(i), colors));
             } else {
                 tooltipLines.add(Component.text(lines.get(i)));
             }
@@ -125,6 +145,12 @@ public class ItemStackTooltipListener {
         boolean cPressed = Laby.labyAPI().minecraft().isKeyPressed(Key.C);
         if (cPressed && !this.wasCPressed) {
             Laby.labyAPI().minecraft().setClipboard(this.cachedPretty);
+
+            Notification.builder()
+                    .title(Component.text("NBT Viewer"))
+                    .text(Component.translatable("nbt-viewer.copied"))
+                    .duration(2000)
+                    .buildAndPush();
         }
         this.wasCPressed = cPressed;
     }
