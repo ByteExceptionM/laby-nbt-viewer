@@ -59,14 +59,6 @@ public class ItemStackTooltipListener {
             return;
         }
 
-        int linesPerPage;
-        if (this.nbtAddon.configuration().getPaginationMode().getOrDefault(PaginationMode.AUTO) == PaginationMode.AUTO) {
-            float guiScale = Laby.labyAPI().minecraft().minecraftWindow().getScale();
-            linesPerPage = Math.max(3, 45 / Math.max(1, Math.round(guiScale)));
-        } else {
-            linesPerPage = this.nbtAddon.configuration().getLinesPerPage().get();
-        }
-
         DataComponentContainer components = itemStack.getDataComponentContainer();
 
         if (this.nbtAddon.configuration().isOnlyShowCustomData().getOrDefault(false)) {
@@ -86,6 +78,14 @@ public class ItemStackTooltipListener {
             this.lastTooltipId = id;
             this.cachedPretty = this.nbtApi.expandedPrettyPrint(components);
             this.cachedLines = List.of(this.cachedPretty.split("\n"));
+        }
+
+        int linesPerPage;
+        if (this.nbtAddon.configuration().getPaginationMode().getOrDefault(PaginationMode.AUTO) == PaginationMode.AUTO) {
+            float guiScale = Laby.labyAPI().minecraft().minecraftWindow().getScale();
+            linesPerPage = Math.max(3, 45 / Math.max(1, Math.round(guiScale)));
+        } else {
+            linesPerPage = this.nbtAddon.configuration().getLinesPerPage().get();
         }
 
         boolean syntaxHighlighting = this.nbtAddon.configuration().isSyntaxHighlighting().getOrDefault(true);
