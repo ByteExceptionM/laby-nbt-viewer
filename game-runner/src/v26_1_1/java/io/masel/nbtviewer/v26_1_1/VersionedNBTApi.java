@@ -1,4 +1,4 @@
-package io.masel.nbtviewer.v1_21_11;
+package io.masel.nbtviewer.v26_1_1;
 
 import com.google.gson.*;
 import io.masel.nbtviewer.api.NBTApi;
@@ -19,7 +19,7 @@ import java.util.List;
 
 @Singleton
 @Implements(NBTApi.class)
-public class NBTApiImpl extends NBTApi {
+public class VersionedNBTApi extends NBTApi {
 
     @Override
     public boolean hasAdvancedToolsTips() {
