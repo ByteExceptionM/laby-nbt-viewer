@@ -6,7 +6,7 @@ plugins {
 val versions = providers.gradleProperty("net.labymod.minecraft-versions").get().split(";")
 
 group = "io.masel"
-version = providers.environmentVariable("VERSION").getOrElse("3.2.0")
+version = providers.environmentVariable("VERSION").getOrElse("3.2.1")
 
 labyMod {
     defaultPackageName = "io.masel.nbtviewer"
