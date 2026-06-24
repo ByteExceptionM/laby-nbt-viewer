@@ -5,6 +5,7 @@ import io.masel.nbtviewer.api.NBTApi;
 import net.labymod.api.component.data.DataComponentContainer;
 import net.labymod.api.component.data.DataComponentKey;
 import net.labymod.api.models.Implements;
+import net.labymod.api.util.logging.Logging;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -20,6 +21,8 @@ import java.util.List;
 @Singleton
 @Implements(NBTApi.class)
 public class VersionedNBTApi extends NBTApi {
+
+    private static final Logging LOGGER = Logging.getLogger();
 
 
     @Override
@@ -64,7 +67,7 @@ public class VersionedNBTApi extends NBTApi {
                 default -> new JsonPrimitive(content.toString());
             };
         } catch (Throwable cause) {
-            cause.printStackTrace();
+            LOGGER.error("Failed to parse NBT data component value", cause);
         }
 
         return JsonNull.INSTANCE;
