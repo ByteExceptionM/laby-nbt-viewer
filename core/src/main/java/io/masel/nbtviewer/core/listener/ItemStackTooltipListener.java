@@ -187,11 +187,11 @@ public class ItemStackTooltipListener {
 
         for (int i = 0; i < totalPages; i++) {
             if (i == this.tooltipPage) {
-                bar.append(this.selectedPageIndicator);
+                bar = bar.append(this.selectedPageIndicator);
                 continue;
             }
 
-            bar.append(this.pageSymbol);
+            bar = bar.append(this.pageSymbol);
         }
 
         return bar.append(this.barClosingBracket);

@@ -18,7 +18,7 @@ public class JsonSyntaxHighlighter {
         String indent = line.substring(0, line.length() - trimmed.length());
 
         if (!indent.isEmpty()) {
-            result.append(Component.text(indent));
+            result = result.append(Component.text(indent));
         }
 
         if (trimmed.isEmpty()) {
@@ -26,7 +26,7 @@ public class JsonSyntaxHighlighter {
         }
 
         if (isStructuralLine(trimmed)) {
-            result.append(Component.text(trimmed).color(colors.bracket()));
+            result = result.append(Component.text(trimmed).color(colors.bracket()));
             return result;
         }
 
@@ -34,13 +34,13 @@ public class JsonSyntaxHighlighter {
 
         if (colonIndex != -1) {
             String key = trimmed.substring(0, colonIndex);
-            result.append(Component.text(key).color(colors.key()));
-            result.append(Component.text(": ").color(colors.punctuation()));
+            result = result.append(Component.text(key).color(colors.key()));
+            result = result.append(Component.text(": ").color(colors.punctuation()));
 
             String valuePart = trimmed.substring(colonIndex + 2);
-            appendValue(result, valuePart, colors);
+            result = appendValue(result, valuePart, colors);
         } else {
-            appendValue(result, trimmed, colors);
+            result = appendValue(result, trimmed, colors);
         }
 
         return result;
@@ -81,7 +81,7 @@ public class JsonSyntaxHighlighter {
         return -1;
     }
 
-    private static void appendValue(Component result, String rawValue, SyntaxColors colors) {
+    private static Component appendValue(Component result, String rawValue, SyntaxColors colors) {
         boolean hasTrailingComma = rawValue.endsWith(",");
         String value = hasTrailingComma ? rawValue.substring(0, rawValue.length() - 1) : rawValue;
 
@@ -99,11 +99,13 @@ public class JsonSyntaxHighlighter {
             color = colors.string();
         }
 
-        result.append(Component.text(value).color(color));
+        result = result.append(Component.text(value).color(color));
 
         if (hasTrailingComma) {
-            result.append(Component.text(",").color(colors.punctuation()));
+            result = result.append(Component.text(",").color(colors.punctuation()));
         }
+
+        return result;
     }
 
     private static boolean isNumeric(String value) {
