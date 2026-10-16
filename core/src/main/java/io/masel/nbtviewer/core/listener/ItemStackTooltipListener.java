@@ -22,6 +22,7 @@ import net.labymod.api.component.data.NbtDataComponentContainer;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.input.MouseScrollEvent;
 import net.labymod.api.event.client.world.ItemStackTooltipEvent;
+import net.labymod.api.nbt.NBTTag;
 import net.labymod.api.nbt.tags.NBTTagCompound;
 import net.labymod.api.notification.NotificationType;
 
@@ -73,12 +74,34 @@ public class ItemStackTooltipListener {
 
         if (config.isOnlyShowCustomData().getOrDefault(false)) {
             DataComponentKey customDataKey = DataComponentKey.fromId("minecraft", "custom_data");
+            DataComponentKey customModelDataKey = DataComponentKey.fromId("minecraft", "custom_model_data");
 
-            if (!components.has(customDataKey)) {
+            NBTTag<?> customModelData = null;
+            if (config.isAlwaysShowCustomModelData().getOrDefault(false)) {
+                customModelData = components.get(customModelDataKey);
+            }
+
+            if (!components.has(customDataKey) && customModelData == null) {
                 return;
             }
 
-            components = new NbtDataComponentContainer((NBTTagCompound) components.get(customDataKey));
+            NBTTagCompound compound = Laby.references().nbtFactory().compound();
+
+            if (components.has(customDataKey)) {
+                NBTTagCompound customData = components.get(customDataKey);
+                for (String key : customData.keySet()) {
+                    NBTTag<?> tag = customData.get(key);
+                    if (tag != null) {
+                        compound.set(key, tag);
+                    }
+                }
+            }
+
+            if (customModelData != null) {
+                compound.set(customModelDataKey.name(), customModelData);
+            }
+
+            components = new NbtDataComponentContainer(compound);
         }
 
         boolean hideEmpty = config.isHideEmptyValues().getOrDefault(true);

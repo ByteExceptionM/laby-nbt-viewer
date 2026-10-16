@@ -8,6 +8,9 @@
       "onlyShowCustomData": {
         "name": "Only Show Custom Data"
       },
+      "alwaysShowCustomModelData": {
+        "name": "Always Show Custom Model Data"
+      },
       "syntaxHighlighting": {
         "name": "Syntax Highlighting"
       },

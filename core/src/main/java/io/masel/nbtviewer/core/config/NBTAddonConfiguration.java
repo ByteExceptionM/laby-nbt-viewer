@@ -19,6 +19,10 @@ public class NBTAddonConfiguration extends AddonConfig {
     @SwitchSetting
     private final ConfigProperty<Boolean> onlyShowCustomData = new ConfigProperty<>(false);
 
+    @SwitchSetting
+    private final ConfigProperty<Boolean> alwaysShowCustomModelData = new ConfigProperty<>(false)
+            .visibilitySupplier(this.onlyShowCustomData::get);
+
     @SettingSection(value = "display", center = true)
 
     @SwitchSetting
@@ -73,6 +77,10 @@ public class NBTAddonConfiguration extends AddonConfig {
 
     public ConfigProperty<Boolean> isOnlyShowCustomData() {
         return this.onlyShowCustomData;
+    }
+
+    public ConfigProperty<Boolean> isAlwaysShowCustomModelData() {
+        return this.alwaysShowCustomModelData;
     }
 
     public ConfigProperty<Boolean> isSyntaxHighlighting() {
